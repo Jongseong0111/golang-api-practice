@@ -8,6 +8,60 @@ import (
 	"database/sql"
 )
 
+const checkDuplicateAccount = `-- name: CheckDuplicateAccount :many
+SELECT user_account from scm_account where user_account=?
+`
+
+func (q *Queries) CheckDuplicateAccount(ctx context.Context, userAccount string) ([]string, error) {
+	rows, err := q.db.QueryContext(ctx, checkDuplicateAccount, userAccount)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []string
+	for rows.Next() {
+		var user_account string
+		if err := rows.Scan(&user_account); err != nil {
+			return nil, err
+		}
+		items = append(items, user_account)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const checkDuplicateEmail = `-- name: CheckDuplicateEmail :many
+SELECT user_email from scm_account where user_email=?
+`
+
+func (q *Queries) CheckDuplicateEmail(ctx context.Context, userEmail string) ([]string, error) {
+	rows, err := q.db.QueryContext(ctx, checkDuplicateEmail, userEmail)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []string
+	for rows.Next() {
+		var user_email string
+		if err := rows.Scan(&user_email); err != nil {
+			return nil, err
+		}
+		items = append(items, user_email)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const createUser = `-- name: CreateUser :execresult
 INSERT INTO scm_account (
     user_name, user_account, user_email, user_password

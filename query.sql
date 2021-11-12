@@ -19,3 +19,9 @@ UPDATE scm_account set scm_account.user_name=? where scm_account.user_id=?;
 -- name: DeleteUser :exec
 DELETE FROM scm_account
 WHERE user_id = ?;
+
+-- name: CheckDuplicateAccount :many
+SELECT user_account from scm_account where user_account=?;
+
+-- name: CheckDuplicateEmail :many
+SELECT user_email from scm_account where user_email=?;
