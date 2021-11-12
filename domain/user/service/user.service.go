@@ -51,3 +51,12 @@ func (receiver UserService) CreateUser(req dto.User) (res tutorial.ScmAccount, e
 
 	return fetchedUser, err
 }
+
+func (receiver UserService) GetUserList() (res []tutorial.ListUserRow, err error) {
+	users, err := dao.ListUser(context.Background())
+	if err != nil {
+		return
+	}
+
+	return users, err
+}

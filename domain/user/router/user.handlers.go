@@ -11,6 +11,7 @@ var (
 )
 func MappingUrl(app *fiber.App) {
 	app.Post("/user", CreateUser)
+	app.Get("/user", GetUserList)
 }
 
 func CreateUser(ctx *fiber.Ctx) error {
@@ -27,4 +28,14 @@ func CreateUser(ctx *fiber.Ctx) error {
 	}
 
 	return ctx.JSON(newUser)
+}
+
+func GetUserList(ctx *fiber.Ctx) error {
+
+	users, err := userService.GetUserList()
+	if err != nil {
+		return ctx.SendStatus(fiber.StatusBadRequest)
+	}
+
+	return ctx.JSON(users)
 }
