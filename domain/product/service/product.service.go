@@ -14,7 +14,6 @@ func (receiver ProductService) CreateProduct(req dto.CreateProductRequest) (res 
 	duplicateProduct, err := dao.CheckDuplicateProductUnit(context.Background(), req.ProductUnit)
 
 	if err != nil {
-		err = errors.New("1")
 		return
 	}
 
@@ -32,31 +31,31 @@ func (receiver ProductService) CreateProduct(req dto.CreateProductRequest) (res 
 	})
 
 	if err != nil {
-		err = errors.New("2")
 		return
 	}
 
 	productId, err := result.LastInsertId()
 	if err != nil {
-		err = errors.New("3")
 		return
 	}
-	fmt.Println(productId)
 
 	newProduct, err := dao.GetProductFromProductID(context.Background(), int32(productId))
 	if err != nil {
-		fmt.Println(err)
-		err = errors.New("4")
 		return
 	}
 
 	return newProduct, err
 }
 
-func (receiver ProductService) GetProductList(userId int32) (res []int32, err error) {
-	productList, err := dao.GetProductIDFromUser(context.Background(), userId)
+func (receiver ProductService) GetProductList(userId int) (res []int32, err error) {
+	productList, err := dao.GetProductIDFromUser(context.Background(), int32(userId))
 	if err != nil {
 		return
 	}
+
+	if len(productList)==0 {
+		err = errors.New(fmt.Sprintf("no product item with userid: %v", userId))
+	}
+
 	return productList, err
 }
