@@ -118,6 +118,18 @@ func (q *Queries) GetProductIDFromUser(ctx context.Context, userID int32) ([]int
 	return items, nil
 }
 
+const getUserFromProduct = `-- name: GetUserFromProduct :one
+SELECT scm_account.user_id from scm_product inner join scm_account
+    on scm_product.manufacturer_id=scm_account.user_id where scm_product.product_id=?
+`
+
+func (q *Queries) GetUserFromProduct(ctx context.Context, productID int32) (int32, error) {
+	row := q.db.QueryRowContext(ctx, getUserFromProduct, productID)
+	var user_id int32
+	err := row.Scan(&user_id)
+	return user_id, err
+}
+
 const updateProductName = `-- name: UpdateProductName :exec
 Update scm_product set product_name=? where product_id=?
 `

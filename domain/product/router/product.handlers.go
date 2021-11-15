@@ -16,6 +16,7 @@ var (
 func MappingUrl(app *fiber.App) {
 	app.Post("/product", CreateProduct)
 	app.Get("/product/:userid", GetProductList)
+	app.Put("/product", UpdateProduct)
 }
 
 func CreateProduct(ctx *fiber.Ctx) error {
@@ -52,5 +53,22 @@ func GetProductList(ctx *fiber.Ctx) error {
 	}
 
 	return ctx.JSON(productList)
-
 }
+
+func UpdateProduct(ctx *fiber.Ctx) error {
+	var item dto.UpdateProductRequest
+	err := ctx.BodyParser(&item)
+	if err != nil {
+		return ctx.Status(http.StatusBadRequest).JSON(util.SendError(http.StatusBadRequest, err, ctx))
+	}
+
+	err = productService.UpdateProduct(item)
+	if err != nil {
+		return ctx.Status(http.StatusInternalServerError).JSON(util.SendError(http.StatusInternalServerError, err, ctx))
+	}
+	return ctx.JSON(util.HTTPStatusResponse{
+		Status:  http.StatusOK,
+		Message: "success",
+	})
+}
+

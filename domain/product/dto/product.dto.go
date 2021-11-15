@@ -17,3 +17,10 @@ type CreateProductResponse struct {
 	RegUserID *int `json:"regUserId"`
 	RegDateTime time.Time `json:"regDateTime"`
 }
+
+type UpdateProductRequest struct {
+	ProductID int `json:"productId"`
+	ProductUnit *string `json:"productUnit"`
+	ProductName *string `json:"productName"`
+	UserID int `json:"manufacturerId"`
+}

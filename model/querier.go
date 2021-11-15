@@ -19,6 +19,7 @@ type Querier interface {
 	GetProductIDFromUser(ctx context.Context, userID int32) ([]int32, error)
 	GetSignedId(ctx context.Context, userAccount string) (int32, error)
 	GetUser(ctx context.Context, userID int32) (ScmAccount, error)
+	GetUserFromProduct(ctx context.Context, productID int32) (int32, error)
 	ListUser(ctx context.Context) ([]ListUserRow, error)
 	UpdateProductName(ctx context.Context, arg UpdateProductNameParams) error
 	UpdateProductUnit(ctx context.Context, arg UpdateProductUnitParams) error

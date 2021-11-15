@@ -23,3 +23,8 @@ where scm_account.user_id = ?;
 -- name: GetProductFromProductID :one
 SELECT * FROM scm_product
 WHERE product_id = ? LIMIT 1;
+
+-- name: GetUserFromProduct :one
+SELECT scm_account.user_id from scm_product inner join scm_account
+    on scm_product.manufacturer_id=scm_account.user_id where scm_product.product_id=?;
+
