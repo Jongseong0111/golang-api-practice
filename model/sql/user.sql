@@ -25,3 +25,7 @@ SELECT user_account from scm_account where user_account=?;
 
 -- name: CheckDuplicateEmail :many
 SELECT user_email from scm_account where user_email=?;
+
+-- name: GetSignedId :one
+SELECT user_id FROM scm_account
+WHERE user_account=?;

@@ -4,12 +4,12 @@ import (
 	"context"
 	"errors"
 	"tutorial.sqlc.dev/app/domain/user/dto"
-	"tutorial.sqlc.dev/app/tutorial"
+	"tutorial.sqlc.dev/app/model"
 )
 
 type UserService struct{}
 
-func (receiver UserService) CreateUser(req dto.User) (res tutorial.ScmAccount, err error) {
+func (receiver UserService) CreateUser(req dto.User) (res model.ScmAccount, err error) {
 	duplicateAccount, err := dao.CheckDuplicateAccount(context.Background(), req.UserAccount)
 	if err != nil {
 		return
@@ -30,7 +30,7 @@ func (receiver UserService) CreateUser(req dto.User) (res tutorial.ScmAccount, e
 		return
 	}
 
-	params := tutorial.CreateUserParams{
+	params := model.CreateUserParams{
 		UserName:  req.UserName,
 		UserEmail: req.UserEmail,
 		UserAccount:  req.UserAccount,
@@ -52,11 +52,27 @@ func (receiver UserService) CreateUser(req dto.User) (res tutorial.ScmAccount, e
 	return fetchedUser, err
 }
 
-func (receiver UserService) GetUserList() (res []tutorial.ListUserRow, err error) {
+func (receiver UserService) GetUserList() (res []model.ListUserRow, err error) {
 	users, err := dao.ListUser(context.Background())
 	if err != nil {
 		return
 	}
 
 	return users, err
+}
+
+func (receiver UserService) UpdateUserAccount(userInfo model.UpdateUserParams) (err error) {
+	err = dao.UpdateUser(context.Background(), userInfo)
+	if err != nil {
+		return
+	}
+	return
+}
+
+func (receiver UserService) GetSignedID(req string) (res int32, err error) {
+	userId, err := dao.GetSignedId(context.Background(), req)
+	if err != nil {
+		return
+	}
+	return userId, err
 }

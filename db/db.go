@@ -12,7 +12,7 @@ func init() {
 }
 
 func Connect() {
-		_db, err := sql.Open("mysql", "root:1234@/sqlc")
+		_db, err := sql.Open("mysql", "root:1234@/sqlc?parseTime=true")
 		if err != nil {
 			return
 		}
