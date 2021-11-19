@@ -47,6 +47,10 @@ func main() {
 	}
 
 	rem.Remind("")
+	rem.Remind("")rem.Remind("")rem.Remind("")
+
+
+
 	if time.Now().Format("3:04") == "11:56" {
 
 		channelID, timestamp, err := api.PostMessage(
